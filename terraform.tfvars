@@ -1,2 +1,2 @@
-tag = "latest"
+tag           = "latest"
 img_repo_name = "devopsprojectc/testingdocker"
