@@ -14,14 +14,14 @@ provider "azurerm" {
 }
 
 #Creating resource group
-resource "azurerm_resource_group" "DevOpsProject" {
-  name     = "DevOpsProject"
-  location = "South India"
+resource "azurerm_resource_group" "devopsprojectb" {
+  name     = "devopsprojectb"
+  location = "East US"
 }
 
 resource "azurerm_container_registry" "devopsprojectc" {
   name                = "devopsprojectc"
-  resource_group_name = azurerm_resource_group.DevOpsProject.name
+  resource_group_name = azurerm_resource_group.devopsprojectb.name
   location            = "Central US"
   sku                 = "Basic"
   admin_enabled       = true
@@ -33,25 +33,25 @@ resource "azurerm_container_registry" "devopsprojectc" {
 #   principal_id         = azurerm_app_service.devopsprojectc.identity[0].principal_id
 # }
 
-resource "azurerm_app_service_plan" "ASP-DevOpsProject-86e8" {
-  name                = "ASP-DevOpsProject-86e8"
-  location            = "Japan East"
+resource "azurerm_app_service_plan" "ASP-devopsprojectb-a087" {
+  name                = "ASP-devopsprojectb-a087"
+  location            = "East US"
   kind                = "linux"
   reserved            = true
-  resource_group_name = azurerm_resource_group.DevOpsProject.name
+  resource_group_name = azurerm_resource_group.devopsprojectb.name
 
   sku {
-    tier = "Premium"
-    size = "P1V3"
+    tier = "Free"
+    size = "F1"
   }
   timeouts {}
 }
 
 resource "azurerm_app_service" "devopsprojectc" {
   name                = "devopsprojectc"
-  location            = "Japan East"
-  resource_group_name = azurerm_resource_group.DevOpsProject.name
-  app_service_plan_id = azurerm_app_service_plan.ASP-DevOpsProject-86e8.id
+  location            = "East US"
+  resource_group_name = azurerm_resource_group.devopsprojectb.name
+  app_service_plan_id = azurerm_app_service_plan.ASP-devopsprojectb-a087.id
 
   site_config {
     always_on = false
@@ -66,7 +66,6 @@ resource "azurerm_app_service" "devopsprojectc" {
       "index.php",
       "hostingstart.html",
     ]
-    linux_fx_version          = "DOCKER|devopsprojectc.azurecr.io/devopsprojectc/testingdocker:latest"
     use_32_bit_worker_process = true
   }
   https_only = true
@@ -76,6 +75,7 @@ resource "azurerm_app_service" "devopsprojectc" {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     DOCKER_REGISTRY_SERVER_USERNAME     = azurerm_container_registry.devopsprojectc.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD     = "FG8Cwq4tfSA+idEf16QWyX6mcaRTILWLEWe7fIpTxN+ACRCWSLHP"
+    WEBSITES_PORT                       = "8080"
   }
   timeouts {}
 }
