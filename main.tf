@@ -19,11 +19,11 @@ resource "azurerm_resource_group" "devopsprojectb" {
   location = "East US"
 }
 
-resource "azurerm_container_registry" "devopsprojectc" {
-  name                = "devopsprojectc"
+resource "azurerm_container_registry" "devopsprojectb" {
+  name                = "devopsprojectb"
   resource_group_name = azurerm_resource_group.devopsprojectb.name
-  location            = "Central US"
-  sku                 = "Basic"
+  location            = "East US"
+  sku                 = "Standard"
   admin_enabled       = true
 }
 
@@ -33,8 +33,8 @@ resource "azurerm_container_registry" "devopsprojectc" {
 #   principal_id         = azurerm_app_service.devopsprojectc.identity[0].principal_id
 # }
 
-resource "azurerm_app_service_plan" "ASP-devopsprojectb-a087" {
-  name                = "ASP-devopsprojectb-a087"
+resource "azurerm_app_service_plan" "ASP-devopsprojectb-9277" {
+  name                = "ASP-devopsprojectb-9277"
   location            = "East US"
   kind                = "linux"
   reserved            = true
@@ -47,11 +47,11 @@ resource "azurerm_app_service_plan" "ASP-devopsprojectb-a087" {
   timeouts {}
 }
 
-resource "azurerm_app_service" "devopsprojectc" {
-  name                = "devopsprojectc"
+resource "azurerm_app_service" "devopsprojectapp" {
+  name                = "devopsprojectapp"
   location            = "East US"
   resource_group_name = azurerm_resource_group.devopsprojectb.name
-  app_service_plan_id = azurerm_app_service_plan.ASP-devopsprojectb-a087.id
+  app_service_plan_id = azurerm_app_service_plan.ASP-devopsprojectb-9277.id
 
   site_config {
     always_on = false
@@ -71,10 +71,10 @@ resource "azurerm_app_service" "devopsprojectc" {
   https_only = true
 
   app_settings = {
-    DOCKER_REGISTRY_SERVER_URL          = "https://${azurerm_container_registry.devopsprojectc.name}.azurecr.io"
+    DOCKER_REGISTRY_SERVER_URL          = "https://${azurerm_container_registry.devopsprojectb.name}.azurecr.io"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
-    DOCKER_REGISTRY_SERVER_USERNAME     = azurerm_container_registry.devopsprojectc.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD     = "FG8Cwq4tfSA+idEf16QWyX6mcaRTILWLEWe7fIpTxN+ACRCWSLHP"
+    DOCKER_REGISTRY_SERVER_USERNAME     = azurerm_container_registry.devopsprojectb.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD     = "a60L7deektrSmbPwTIDHIBVHVKnYWqcb6gMghPXXUQ+ACRC66OaY"
     WEBSITES_PORT                       = "8080"
   }
   timeouts {}
