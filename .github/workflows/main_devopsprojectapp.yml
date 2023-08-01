@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://devopsprojectb.azurecr.io/
-        username: ${{ secrets.AzureAppService_ContainerUsername_637793dfdd534beabf5ff44670f66eab }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_b982c5f318ea4b5c9921c7c0f0b12b4c }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_7e6c433ccb714f56b43b4638cd4f0e04 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_5a4f629d6203404db2769f829ca36889 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: devopsprojectb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_637793dfdd534beabf5ff44670f66eab }}/calculatorapp:${{ github.sha }}
+        tags: devopsprojectb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_7e6c433ccb714f56b43b4638cd4f0e04 }}/devopsprojectb/calculatorapp:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'devopsprojectapp'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_dd07973578e241dda0ee4872d69e661a }}
-        images: 'devopsprojectb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_637793dfdd534beabf5ff44670f66eab }}/calculatorapp:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_127b65375d2d4bc8a02281c2c3781325 }}
+        images: 'devopsprojectb.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_7e6c433ccb714f56b43b4638cd4f0e04 }}/devopsprojectb/calculatorapp:${{ github.sha }}'
